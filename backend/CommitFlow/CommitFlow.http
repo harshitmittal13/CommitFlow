@@ -1,0 +1,6 @@
+@CommitFlow_HostAddress = http://localhost:5031
+
+GET {{CommitFlow_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

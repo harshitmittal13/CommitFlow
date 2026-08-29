@@ -1,0 +1,68 @@
+.login-box {
+  background-color: lightgrey;
+  width: 600px;
+  height: 300px;
+  border: 15px solid green;
+  padding: 30px;
+  margin: 20px;
+  margin-left: 350px;
+  margin-top: 200px;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  margin-top: 0px;
+}
+
+.first-name-input {
+  border: 3px solid black;
+  width: 169px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  margin-left: 215px;
+}
+
+.last-name-input {
+  border: 3px solid black;
+  width: 169px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  margin-left: 215px;
+  margin-top: 5px;
+}
+
+.email-input {
+  border: 3px solid black;
+  width: 169px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  margin-left: 215px;
+  margin-top: 5px;
+}
+
+.password-input {
+  border: 3px solid black;
+  width: 169px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  margin-left: 215px;
+  margin-top: 5px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.new-user {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  color: rgb(27, 153, 232);
+}

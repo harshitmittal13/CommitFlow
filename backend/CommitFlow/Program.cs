@@ -65,7 +65,23 @@ builder.Services.AddScoped<IUserService, UserService>();
 // Register the DAO Interface.
 builder.Services.AddScoped<IUserDAO, UserDAO>();
 
+// Register CORS policy to allow requests from the frontend application.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+
 var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+app.UseCors("AllowFrontend");
 
 // Expose the OpenAPI document during development.
 if (app.Environment.IsDevelopment())

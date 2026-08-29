@@ -1,5 +1,6 @@
 ﻿using CommitFlow.Data;
 using CommitFlow.DTOs.NewUser;
+using CommitFlow.DTOs.UserLogin;
 using CommitFlow.Models;
 using Microsoft.EntityFrameworkCore;
 using CommitFlow.Interfaces;
@@ -9,9 +10,11 @@ namespace CommitFlow.DAO
     public class UserDAO : IUserDAO
     {
         private readonly CommitFlowDbContext _dbContext;
-        public UserDAO(CommitFlowDbContext dbContext)
+        private readonly IJwtTokenService _jwtTokenService;
+        public UserDAO(CommitFlowDbContext dbContext, IJwtTokenService jwtTokenService)
         {
             _dbContext = dbContext;
+            _jwtTokenService = jwtTokenService;
         }
 
         /// <summary>
@@ -47,6 +50,30 @@ namespace CommitFlow.DAO
             {
                 Message = "User created successfully.",
                 UserId = newUser.UserId
+            };
+        }
+
+        /// <summary>
+        /// Authenticates a user based on the provided login credentials.
+        /// </summary>
+        public async Task<UserLoginResponseDTO> AuthenticateUser(UserLoginRequestDTO req)
+        {
+            // Check if the email and password match an existing user
+            var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == req.Email && u.Password == req.Password);
+            if (existingUser == null)
+            {
+                return new UserLoginResponseDTO
+                {
+                    Message = "Invalid email or password.",
+                    AuthToken = string.Empty
+                };
+            }
+            // Generate an authentication token (this is a simplified example)
+            string authToken = _jwtTokenService.GenerateToken(existingUser.UserId, existingUser.Email);
+            return new UserLoginResponseDTO
+            {
+                Message = "Authentication successful.",
+                AuthToken = authToken
             };
         }
     }

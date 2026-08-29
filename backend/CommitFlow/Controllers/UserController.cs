@@ -1,5 +1,5 @@
-﻿using CommitFlow.DTOs;
-using CommitFlow.DTOs.NewUser;
+﻿using CommitFlow.DTOs.NewUser;
+using CommitFlow.DTOs.UserLogin;
 using CommitFlow.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -58,11 +58,23 @@ namespace CommitFlow.Controllers
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        [HttpPost("User")]
-        [Authorize]
-        public async Task<IActionResult> AuthenticateUser([FromBody] LoginRequestDTO req)
+        [HttpPost("Auth")]
+        public async Task<IActionResult> AuthenticateUser([FromBody] UserLoginRequestDTO req)
         {
-            return Ok();
+            if (req.Email.Trim().Length == 0)
+            {
+                return BadRequest("Email is required.");
+            }
+            if (req.Password.Trim().Length == 0)
+            {
+                return BadRequest("Password is required.");
+            }
+            if (req.Password.Trim().Length < 6)
+            {
+                return BadRequest("Password must be at least 6 characters long.");
+            }
+            UserLoginResponseDTO response = await _userService.AuthenticateUser(req);
+            return Ok(response);
         }
     }
 }

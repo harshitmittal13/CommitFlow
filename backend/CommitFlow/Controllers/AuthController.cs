@@ -1,4 +1,4 @@
-﻿using CommitFlow.DTOs;
+﻿using CommitFlow.DTOs.UserLogin;
 using CommitFlow.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +24,7 @@ namespace CommitFlow.Controllers
         /// <returns></returns>
         [HttpPost("User")]
         [Authorize]
-        public async Task<IActionResult> AuthenticateUser([FromBody] LoginRequestDTO req)
+        public async Task<IActionResult> AuthenticateUser([FromBody] UserLoginRequestDTO req)
         {
             return Ok();
         }

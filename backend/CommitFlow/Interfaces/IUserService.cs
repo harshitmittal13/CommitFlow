@@ -1,5 +1,6 @@
 ﻿using CommitFlow.DTOs.NewUser;
 using CommitFlow.DTOs.UserLogin;
+using CommitFlow.DTOs.UpdatePassword;
 
 namespace CommitFlow.Interfaces
 {
@@ -14,5 +15,10 @@ namespace CommitFlow.Interfaces
         /// Authenticates a user based on the provided user ID and email, returning a response containing authentication details.
         /// </summary>
         public Task<UserLoginResponseDTO> AuthenticateUser(UserLoginRequestDTO req);
+
+        /// <summary>
+        /// Updates the password for an authenticated user.
+        /// </summary>
+        public Task<string> UpdatePassword(UpdatePasswordRequestDTO req);
     }
 }

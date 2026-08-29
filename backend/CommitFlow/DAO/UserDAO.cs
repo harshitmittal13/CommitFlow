@@ -1,6 +1,7 @@
 ﻿using CommitFlow.Data;
 using CommitFlow.DTOs.NewUser;
 using CommitFlow.DTOs.UserLogin;
+using CommitFlow.DTOs.UpdatePassword;
 using CommitFlow.Models;
 using Microsoft.EntityFrameworkCore;
 using CommitFlow.Interfaces;
@@ -75,6 +76,24 @@ namespace CommitFlow.DAO
                 Message = "Authentication successful.",
                 AuthToken = authToken
             };
+        }
+
+        /// <summary>
+        /// Updates the password for an authenticated user.
+        /// </summary>
+        public async Task<string> UpdatePassword(UpdatePasswordRequestDTO req)
+        {
+            // Check if the email and current password match an existing user
+            var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == req.Email && u.Password == req.Password);
+            if (existingUser == null)
+            {
+                return "Invalid email or current password.";
+            }
+            // Update the user's password
+            existingUser.Password = req.NewPassword;
+            existingUser.UpdatedAtUtc = DateTime.UtcNow;
+            await _dbContext.SaveChangesAsync();
+            return "Password updated successfully.";
         }
     }
 }

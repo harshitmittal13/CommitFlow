@@ -1,4 +1,5 @@
 ﻿using CommitFlow.DTOs.NewUser;
+using CommitFlow.DTOs.UpdatePassword;
 using CommitFlow.DTOs.UserLogin;
 using CommitFlow.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -29,22 +30,6 @@ namespace CommitFlow.Controllers
         [HttpPost("Create/NewUser")]
         public async Task<IActionResult> CreateNewUser([FromBody] NewUserRequestDTO req)
         {
-            if (req.FirstName.Trim().Length == 0)
-            {
-                return BadRequest("First name is required.");
-            }
-            if (req.LastName.Trim().Length == 0)
-            {
-                return BadRequest("Last name is required.");
-            }
-            if (req.Email.Trim().Length == 0)
-            {
-                return BadRequest("Email is required.");
-            }
-            if (req.Password.Trim().Length == 0)
-            {
-                return BadRequest("Password is required.");
-            }
             if (req.Password.Trim().Length < 6)
             {
                 return BadRequest("Password must be at least 6 characters long.");
@@ -61,19 +46,27 @@ namespace CommitFlow.Controllers
         [HttpPost("Auth")]
         public async Task<IActionResult> AuthenticateUser([FromBody] UserLoginRequestDTO req)
         {
-            if (req.Email.Trim().Length == 0)
-            {
-                return BadRequest("Email is required.");
-            }
-            if (req.Password.Trim().Length == 0)
-            {
-                return BadRequest("Password is required.");
-            }
-            if (req.Password.Trim().Length < 6)
-            {
-                return BadRequest("Password must be at least 6 characters long.");
-            }
             UserLoginResponseDTO response = await _userService.AuthenticateUser(req);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Updates the password for an authenticated user.
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [HttpPost("Update/Password")]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordRequestDTO req)
+        {
+            if (req.NewPassword.Trim().Length < 6)
+            {
+                return BadRequest("New password must be at least 6 characters long.");
+            }
+            if (req.NewPassword == req.Password)
+            {
+                return BadRequest("New password cannot be the same as the current password.");
+            }
+            String response = await _userService.UpdatePassword(req);
             return Ok(response);
         }
     }

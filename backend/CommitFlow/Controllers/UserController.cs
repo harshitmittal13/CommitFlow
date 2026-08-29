@@ -47,6 +47,10 @@ namespace CommitFlow.Controllers
         public async Task<IActionResult> AuthenticateUser([FromBody] UserLoginRequestDTO req)
         {
             UserLoginResponseDTO response = await _userService.AuthenticateUser(req);
+            if(response.Message == "Invalid email or password.")
+            {
+                return BadRequest(response);
+            }
             return Ok(response);
         }
 

@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using CommitFlow.DTOs.NewUser;
 using CommitFlow.DTOs.UserLogin;
+using CommitFlow.DTOs.UpdatePassword;
 using CommitFlow.Models;
 using CommitFlow.Interfaces;
 
@@ -30,6 +31,15 @@ namespace CommitFlow.Services
         public async Task<UserLoginResponseDTO> AuthenticateUser(UserLoginRequestDTO req)
         {
             UserLoginResponseDTO response = await _userDAO.AuthenticateUser(req);
+            return response;
+        }
+
+        /// <summary>
+        /// Updates the password for an authenticated user.
+        /// </summary>
+        public async Task<string> UpdatePassword(UpdatePasswordRequestDTO req)
+        {
+            string response = await _userDAO.UpdatePassword(req);
             return response;
         }
     }
